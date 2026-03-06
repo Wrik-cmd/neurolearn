@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Recommendations — NeuroLearn</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <style>
+    .rec-hero {
+      padding: 5rem 2rem 2rem;
+      text-align: center;
+      position: relative; z-index: 1;
+    }
+    .ai-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.5rem 1.25rem;
+      background: rgba(180,79,255,0.1);
+      border: 1px solid rgba(180,79,255,0.3);
+      border-radius: 24px;
+      font-family: var(--font-display); font-size:0.65rem;
+      letter-spacing:0.2em; text-transform:uppercase; color:var(--neon-purple);
+      margin-bottom:1.5rem;
+      animation: aiBadgePulse 2s ease-in-out infinite;
+    }
+    @keyframes aiBadgePulse {
+      0%,100%{box-shadow:0 0 10px rgba(180,79,255,0.2)}
+      50%{box-shadow:0 0 25px rgba(180,79,255,0.5)}
+    }
+    .ai-dot { width:8px;height:8px;border-radius:50%;background:var(--neon-purple);box-shadow:0 0 8px var(--neon-purple);animation:dotBlink 1.5s ease-in-out infinite; }
+
+    .rec-section { max-width:1280px;margin:0 auto;padding:1rem 2rem 4rem;position:relative;z-index:1; }
+    .rec-section-header {
+      display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;
+    }
+    .rec-section-title { font-family:var(--font-display);font-size:0.8rem;font-weight:600;color:var(--text-primary); }
+    .rec-section-subtitle { font-size:0.78rem;color:var(--text-muted);margin-top:0.15rem; }
+
+    .path-timeline {
+      position:relative; padding-left: 2rem;
+    }
+    .path-timeline::before {
+      content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;
+      background:linear-gradient(180deg,var(--neon-cyan),var(--neon-purple),transparent);
+    }
+    .path-item {
+      position:relative; padding:1.25rem 1.25rem 1.25rem 1.5rem;
+      margin-bottom:1rem; border-radius:10px;
+      background:rgba(8,20,45,0.6); border:1px solid rgba(0,245,255,0.08);
+      transition:var(--transition);
+      animation:fadeInUp 0.5s ease both;
+    }
+    .path-item:nth-child(1){animation-delay:0.1s}
+    .path-item:nth-child(2){animation-delay:0.2s}
+    .path-item:nth-child(3){animation-delay:0.3s}
+    .path-item:hover{border-color:rgba(0,245,255,0.3);transform:translateX(6px);}
+    .path-dot {
+      position:absolute;left:-2rem;top:50%;transform:translateY(-50%);
+      width:16px;height:16px;border-radius:50%;
+      border:2px solid var(--neon-cyan);
+      background:var(--bg-deep);
+      box-shadow:0 0 10px rgba(0,245,255,0.4);
+    }
+    .path-item.done .path-dot {background:var(--neon-green);border-color:var(--neon-green);box-shadow:0 0 10px var(--neon-green);}
+    .path-item.current .path-dot {background:var(--neon-cyan);animation:dotBlink 1s ease-in-out infinite;}
+    .path-title {font-family:var(--font-display);font-size:0.88rem;font-weight:600;color:var(--text-primary);margin-bottom:0.25rem;}
+    .path-meta  {font-size:0.78rem;color:var(--text-muted);}
+
+    #rec-loading {display:flex;align-items:center;justify-content:center;padding:4rem;flex-direction:column;gap:1rem;}
+    .loading-text{font-family:var(--font-display);font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--neon-purple);animation:loadingDots 1.5s ease-in-out infinite;}
+    @keyframes loadingDots{0%,100%{opacity:0.4}50%{opacity:1}}
+  </style>
+</head>
+<body>
+  <div class="scan-lines"></div>
+
+  <header>
+    <nav>
+      <a href="index.html" class="nav-logo glitch" data-text="NEUROLEARN">NEUROLEARN</a>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="course.html">Courses</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="recommendation.html" class="active">AI Recs</a></li>
+        <li><a href="profile.html">Profile</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="dashboard.html" class="btn btn-outline btn-sm">← Dashboard</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="page-wrapper">
+    <div class="rec-hero">
+      <div class="ai-badge">
+        <div class="ai-dot"></div>
+        Neural AI Engine Active
+      </div>
+      <h1 class="section-title fade-in-up">Your Learning Path</h1>
+      <p class="section-subtitle fade-in-up delay-1">AI-generated recommendations based on your quiz history and weak areas.</p>
+    </div>
+
+    <div class="rec-section">
+
+      <!-- AI RECS GRID -->
+      <div class="rec-section-header">
+        <div>
+          <div class="rec-section-title">Recommended Next Topics</div>
+          <div class="rec-section-subtitle">Personalized for your weak areas</div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="location.reload()">🔄 Refresh</button>
+      </div>
+
+      <div id="rec-loading">
+        <div class="spinner"></div>
+        <div class="loading-text">AI Analyzing Your Performance...</div>
+      </div>
+      <div id="rec-grid" style="display:none;"></div>
+
+      <div class="neon-divider" style="margin:2.5rem 0;"></div>
+
+      <!-- LEARNING PATH -->
+      <div class="rec-section-header">
+        <div>
+          <div class="rec-section-title">Suggested Learning Path</div>
+          <div class="rec-section-subtitle">Optimal sequence to master Data Structures & Algorithms</div>
+        </div>
+      </div>
+
+      <div class="path-timeline">
+        <div class="path-item done">
+          <div class="path-dot"></div>
+          <div class="path-title">Arrays & Strings ✓</div>
+          <div class="path-meta">Completed · 85% score · Easy</div>
+        </div>
+        <div class="path-item done">
+          <div class="path-dot"></div>
+          <div class="path-title">Linked Lists ✓</div>
+          <div class="path-meta">Completed · 78% score · Easy</div>
+        </div>
+        <div class="path-item current">
+          <div class="path-dot"></div>
+          <div class="path-title">Binary Search → You are here</div>
+          <div class="path-meta">In progress · Medium</div>
+          <a href="quiz.html?topic=Binary+Search" class="btn btn-primary btn-sm" style="margin-top:0.75rem;">Continue →</a>
+        </div>
+        <div class="path-item">
+          <div class="path-dot"></div>
+          <div class="path-title">Recursion</div>
+          <div class="path-meta">Recommended next · Medium · +150 XP</div>
+        </div>
+        <div class="path-item">
+          <div class="path-dot"></div>
+          <div class="path-title">Dynamic Programming</div>
+          <div class="path-meta">Locked · Hard · +250 XP</div>
+        </div>
+        <div class="path-item">
+          <div class="path-dot"></div>
+          <div class="path-title">Graph Algorithms</div>
+          <div class="path-meta">Locked · Hard · +300 XP</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer><span>NEUROLEARN</span> &copy; 2025</footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/recommendation.js"></script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Result — NeuroLearn</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/quiz.css" />
+</head>
+<body>
+  <div class="scan-lines"></div>
+  <div class="confetti-container" id="confetti-container"></div>
+
+  <header>
+    <nav>
+      <a href="index.html" class="nav-logo glitch" data-text="NEUROLEARN">NEUROLEARN</a>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="course.html">Courses</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="dashboard.html" class="btn btn-outline btn-sm">← Dashboard</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="page-wrapper">
+    <div class="result-page">
+
+      <!-- HERO SCORE -->
+      <div class="card result-hero fade-in-up">
+        <div class="result-score-ring" id="score-ring">
+          <span class="result-score-number" id="score-number">0</span>
+          <span class="result-score-percent">/ <span id="total-q">10</span></span>
+        </div>
+        <div class="result-grade" id="result-grade">–</div>
+        <div id="result-message" style="color:var(--text-muted);font-size:0.95rem;margin-bottom:1rem;"></div>
+        <div id="xp-earned" style="font-family:var(--font-display);font-size:0.85rem;color:var(--neon-green);"></div>
+      </div>
+
+      <!-- SUMMARY GRID -->
+      <div class="result-summary-grid fade-in-up delay-1">
+        <div class="card result-item-card">
+          <div class="result-item-val text-green" id="correct-count">0</div>
+          <div class="result-item-label">Correct</div>
+        </div>
+        <div class="card result-item-card">
+          <div class="result-item-val" style="color:#ff4466;" id="wrong-count">0</div>
+          <div class="result-item-label">Incorrect</div>
+        </div>
+        <div class="card result-item-card">
+          <div class="result-item-val text-cyan" id="time-taken">0s</div>
+          <div class="result-item-label">Time Taken</div>
+        </div>
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="flex-center gap-2 fade-in-up delay-2" style="margin-bottom:2rem;flex-wrap:wrap;">
+        <a href="quiz.html" class="btn btn-primary btn-lg">Retry Quiz →</a>
+        <a href="recommendation.html" class="btn btn-purple btn-lg">Get Recommendations ⚡</a>
+        <a href="dashboard.html" class="btn btn-outline btn-lg">Back to Dashboard</a>
+      </div>
+
+      <!-- BREAKDOWN TABLE -->
+      <div class="card fade-in-up delay-3" style="padding:1.75rem;">
+        <div style="font-family:var(--font-display);font-size:0.8rem;font-weight:600;margin-bottom:1.25rem;color:var(--text-primary);">Answer Breakdown</div>
+        <div id="breakdown-list"></div>
+      </div>
+
+      <!-- NEXT RECOMMENDATIONS TEASER -->
+      <div class="card fade-in-up delay-4" style="padding:1.75rem;margin-top:1.5rem;">
+        <div style="font-family:var(--font-display);font-size:0.8rem;font-weight:600;margin-bottom:0.5rem;color:var(--neon-cyan);">⚡ AI Recommendation</div>
+        <div style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1rem;" id="ai-recommendation">
+          Based on your results, we recommend reviewing <strong style="color:var(--text-primary)">Binary Search Trees</strong> next.
+        </div>
+        <a href="recommendation.html" class="btn btn-outline btn-sm">View All Recommendations →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <footer><span>NEUROLEARN</span> &copy; 2025</footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load result from session storage
+      const raw = sessionStorage.getItem('quiz_result');
+      let result = raw ? JSON.parse(raw) : null;
+
+      // Demo data if no result
+      if (!result) {
+        result = {
+          score: 7, total: 10, percentage: 70,
+          timeTaken: 142,
+          answers: API.mock.questions.map((q, i) => ({
+            questionId: q.id, selected: i % 3 === 0 ? q.correct : (q.correct + 1) % 4, correct: q.correct, text: q.text, options: q.options
+          }))
+        };
+      }
+
+      const { score, total, percentage, timeTaken, answers } = result;
+
+      // Grade
+      let grade, gradeClass, message, xp;
+      if (percentage >= 90) { grade = 'A+'; gradeClass = 'grade-A'; message = 'Outstanding! You crushed it.'; xp = 200; }
+      else if (percentage >= 80) { grade = 'A'; gradeClass = 'grade-A'; message = 'Excellent performance!'; xp = 160; }
+      else if (percentage >= 70) { grade = 'B'; gradeClass = 'grade-B'; message = 'Great work — keep going!'; xp = 120; }
+      else if (percentage >= 60) { grade = 'C'; gradeClass = 'grade-C'; message = 'Not bad. More practice helps.'; xp = 80; }
+      else { grade = 'F'; gradeClass = 'grade-F'; message = "Don't give up — review and retry!"; xp = 40; }
+
+      // Animate score
+      const scoreEl = document.getElementById('score-number');
+      let cur = 0;
+      const interval = setInterval(() => {
+        cur++;
+        scoreEl.textContent = cur;
+        if (cur >= score) clearInterval(interval);
+      }, 100);
+
+      document.getElementById('total-q').textContent = total;
+      document.getElementById('result-grade').textContent = grade;
+      document.getElementById('result-grade').className = `result-grade ${gradeClass}`;
+      document.getElementById('result-message').textContent = message;
+      document.getElementById('xp-earned').textContent = `+${xp} XP earned`;
+      document.getElementById('correct-count').textContent = score;
+      document.getElementById('wrong-count').textContent = total - score;
+      document.getElementById('time-taken').textContent = timeTaken < 60 ? `${timeTaken}s` : `${Math.floor(timeTaken/60)}m ${timeTaken%60}s`;
+
+      // Breakdown
+      const breakdownList = document.getElementById('breakdown-list');
+      const mockQ = API.mock.questions;
+      breakdownList.innerHTML = (answers || mockQ).slice(0, 10).map((a, i) => {
+        const isCorrect = a.selected === a.correct;
+        const q = mockQ[i % mockQ.length];
+        return `
+          <div style="display:flex;align-items:flex-start;gap:1rem;padding:0.85rem 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+            <div style="width:24px;height:24px;border-radius:50%;background:${isCorrect?'rgba(57,255,20,0.2)':'rgba(255,68,102,0.2)'};border:1px solid ${isCorrect?'var(--neon-green)':'#ff4466'};display:flex;align-items:center;justify-content:center;font-size:0.8rem;flex-shrink:0;">
+              ${isCorrect ? '✓' : '✕'}
+            </div>
+            <div style="flex:1;">
+              <div style="font-size:0.85rem;color:var(--text-primary);margin-bottom:0.2rem;">Q${i+1}: ${q.text || 'Question'}</div>
+              <div style="font-size:0.75rem;color:${isCorrect?'var(--neon-green)':'#ff4466'};">
+                ${isCorrect ? '✓ Correct' : '✕ Incorrect'}
+              </div>
+            </div>
+            <span class="badge ${isCorrect?'badge-green':'badge-orange'}" style="flex-shrink:0;">
+              ${isCorrect ? '+' + Math.ceil(xp/score) + ' XP' : '0 XP'}
+            </span>
+          </div>
+        `;
+      }).join('');
+
+      // Confetti for good scores
+      if (percentage >= 70) spawnConfetti();
+
+      // Update XP in localStorage
+      const user = API.auth.getUser();
+      if (user) {
+        user.xp = (user.xp || 0) + xp;
+        localStorage.setItem('nl_user', JSON.stringify(user));
+      }
+    });
+
+    function spawnConfetti() {
+      const container = document.getElementById('confetti-container');
+      const colors = ['var(--neon-cyan)', 'var(--neon-purple)', 'var(--neon-green)', 'var(--neon-orange)', '#fff'];
+      for (let i = 0; i < 80; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.cssText = `
+          left: ${Math.random() * 100}%;
+          background: ${colors[Math.floor(Math.random() * colors.length)]};
+          animation-duration: ${1.5 + Math.random() * 2}s;
+          animation-delay: ${Math.random() * 0.8}s;
+          width: ${4 + Math.random() * 8}px;
+          height: ${4 + Math.random() * 8}px;
+          border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+        `;
+        container.appendChild(piece);
+        piece.addEventListener('animationend', () => piece.remove());
+      }
+    }
+  </script>
+</body>
+</html>

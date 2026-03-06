@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — NeuroLearn</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <style>
+    .course-card { transition: transform 0.35s cubic-bezier(0.23,1,0.32,1), border-color 0.3s; }
+    .chart-col { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+    .chart-label { font-size: 0.65rem; color: var(--text-muted); font-family: var(--font-display); letter-spacing: 0.05em; }
+    .chart-y-labels { display: flex; flex-direction: column; justify-content: space-between; height: 180px; padding: 0 0.5rem 0 0; }
+    .chart-y-labels span { font-size: 0.65rem; color: var(--text-muted); }
+    #chart-container { display: flex; gap: 0.5rem; align-items: flex-end; }
+    .spinner-inline { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(2,8,17,0.3); border-top-color: var(--bg-deep); border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: middle; }
+    @keyframes skeletonPulse { 0%,100%{opacity:0.3} 50%{opacity:0.6} }
+  </style>
+</head>
+<body>
+  <div class="scan-lines"></div>
+
+  <header>
+    <nav>
+      <a href="index.html" class="nav-logo glitch" data-text="NEUROLEARN">NEUROLEARN</a>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="course.html">Courses</a></li>
+        <li><a href="dashboard.html" class="active">Dashboard</a></li>
+        <li><a href="recommendation.html">AI Recs</a></li>
+        <li><a href="profile.html">Profile</a></li>
+      </ul>
+      <div class="nav-cta">
+        <span class="notif-dot"></span>
+        <a href="#" data-action="logout" class="btn btn-outline btn-sm">Logout</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="page-wrapper">
+    <div class="dashboard-layout">
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-user">
+          <div class="sidebar-avatar" data-user-avatar>AC</div>
+          <div class="sidebar-user-info">
+            <strong data-user-name>Alex Chen</strong>
+            <small>Level <span data-user-level>12</span> · <span data-user-xp>2450</span> XP</small>
+          </div>
+        </div>
+
+        <div class="sidebar-section-label">Navigation</div>
+        <a href="dashboard.html" class="sidebar-item active"><span class="sidebar-icon">📊</span> Dashboard</a>
+        <a href="course.html"    class="sidebar-item"><span class="sidebar-icon">📚</span> Courses</a>
+        <a href="learn.html"     class="sidebar-item"><span class="sidebar-icon">🧠</span> Learn</a>
+        <a href="quiz.html"      class="sidebar-item"><span class="sidebar-icon">🎯</span> Quiz</a>
+
+        <div class="sidebar-section-label">Progress</div>
+        <a href="result.html"        class="sidebar-item"><span class="sidebar-icon">📈</span> Results</a>
+        <a href="recommendation.html"class="sidebar-item"><span class="sidebar-icon">⚡</span> AI Recommendations</a>
+
+        <div class="sidebar-section-label">Account</div>
+        <a href="profile.html"   class="sidebar-item"><span class="sidebar-icon">👤</span> Profile</a>
+        <a href="#" data-action="logout" class="sidebar-item"><span class="sidebar-icon">🚪</span> Logout</a>
+      </aside>
+
+      <!-- MAIN -->
+      <main class="dashboard-main" id="dashboard-main">
+
+        <!-- Welcome Banner -->
+        <div class="welcome-banner card">
+          <div>
+            <div class="welcome-title">Welcome back, <span data-user-name>Alex</span> 👋</div>
+            <div class="welcome-subtitle">You're on a 12-day streak — keep it up!</div>
+            <div class="flex gap-2 mt-2">
+              <a href="quiz.html" class="btn btn-primary btn-sm">Start Quiz →</a>
+              <a href="recommendation.html" class="btn btn-outline btn-sm">Get Recommendations</a>
+            </div>
+          </div>
+          <div class="welcome-xp">
+            <div class="xp-circle">
+              <span class="xp-number" data-user-xp>2450</span>
+              <span class="xp-label">XP Total</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid" id="stats-container">
+          <!-- Filled by dashboard.js -->
+          <div class="card stat-card"><span class="stat-icon">🎯</span><div class="stat-value">47</div><div class="stat-label">Quizzes Taken</div></div>
+          <div class="card stat-card"><span class="stat-icon">📊</span><div class="stat-value">78%</div><div class="stat-label">Average Score</div></div>
+          <div class="card stat-card"><span class="stat-icon">🔥</span><div class="stat-value">12</div><div class="stat-label">Day Streak</div></div>
+          <div class="card stat-card"><span class="stat-icon">📚</span><div class="stat-value">5</div><div class="stat-label">Courses Enrolled</div></div>
+        </div>
+
+        <!-- Row: Chart + Activity -->
+        <div class="dashboard-cards">
+
+          <!-- Chart Card -->
+          <div class="card" style="padding:1.5rem;grid-column:span 2;">
+            <div class="flex-between mb-2">
+              <div>
+                <div style="font-family:var(--font-display);font-size:0.8rem;font-weight:600;color:var(--text-primary);">Weekly Performance</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);">Quiz scores over last 7 days</div>
+              </div>
+              <span class="badge badge-cyan">This Week</span>
+            </div>
+            <div id="chart-container" style="height:200px;align-items:flex-end;">
+              <div class="spinner"></div>
+            </div>
+          </div>
+
+          <!-- Activity Feed -->
+          <div class="card" style="padding:1.5rem;">
+            <div class="flex-between mb-2">
+              <div style="font-family:var(--font-display);font-size:0.8rem;font-weight:600;">Recent Activity</div>
+              <span class="notif-dot"></span>
+            </div>
+            <div id="activity-container">
+              <div class="spinner"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Row: Weak Topics + Courses -->
+        <div class="dashboard-cards" style="grid-template-columns:1fr 2fr;">
+
+          <!-- Weak Topics -->
+          <div class="card" style="padding:1.5rem;">
+            <div class="flex-between mb-3">
+              <div style="font-family:var(--font-display);font-size:0.8rem;font-weight:600;">Weak Areas</div>
+              <a href="recommendation.html" class="btn btn-sm btn-outline">Get Help →</a>
+            </div>
+            <div id="weak-topics-container">
+              <div class="spinner"></div>
+            </div>
+          </div>
+
+          <!-- Course Progress -->
+          <div class="card" style="padding:1.5rem;">
+            <div class="flex-between mb-3">
+              <div style="font-family:var(--font-display);font-size:0.8rem;font-weight:600;">My Courses</div>
+              <a href="course.html" class="btn btn-sm btn-outline">Browse All →</a>
+            </div>
+            <div id="course-cards" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+              <div class="spinner"></div>
+            </div>
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <footer>
+    <span>NEUROLEARN</span> &copy; 2025 — Adaptive AI Learning Platform
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
