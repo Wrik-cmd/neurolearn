@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz — NeuroLearn</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/quiz.css" />
+  <style>
+    .spinner-inline { display:inline-block;width:14px;height:14px;border:2px solid rgba(2,8,17,0.3);border-top-color:var(--bg-deep);border-radius:50%;animation:spin 0.8s linear infinite;vertical-align:middle; }
+    @keyframes skeletonPulse{0%,100%{opacity:0.3}50%{opacity:0.6}}
+  </style>
+</head>
+<body>
+  <div class="scan-lines"></div>
+
+  <header>
+    <nav>
+      <a href="index.html" class="nav-logo glitch" data-text="NEUROLEARN">NEUROLEARN</a>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="course.html">Courses</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="dashboard.html" class="btn btn-outline btn-sm">← Dashboard</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="page-wrapper">
+    <div class="quiz-page">
+
+      <!-- QUIZ HEADER -->
+      <div class="quiz-header">
+        <div class="quiz-meta">
+          <span class="quiz-subject" id="quiz-subject">Data Structures & Algorithms</span>
+          <span class="quiz-title-text" id="quiz-title">Binary Search Quiz</span>
+        </div>
+        <div class="quiz-timer">
+          <div class="timer-circle" id="timer-circle">
+            <span class="timer-value" id="timer-value">30</span>
+            <span class="timer-label">SEC</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROGRESS STEPS -->
+      <div class="quiz-progress-steps" id="progress-steps">
+        <!-- Filled by quiz.js -->
+        <div class="step-dot current"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+      </div>
+
+      <!-- QUESTION CONTAINER -->
+      <div id="quiz-container" class="quiz-container">
+
+        <div class="card question-card">
+          <div class="question-number" id="question-number">Question 1 of 10</div>
+          <p class="question-text" id="question-text">
+            Loading question...
+          </p>
+          <span class="question-tag badge badge-orange" id="question-tag">General</span>
+        </div>
+
+        <!-- OPTIONS -->
+        <ul class="options" id="options-list" role="listbox" aria-label="Answer options">
+          <li class="option-item">
+            <span class="option-key">A</span>
+            <span class="option-text">Loading...</span>
+            <span class="option-indicator"></span>
+          </li>
+        </ul>
+
+        <!-- QUIZ FOOTER -->
+        <div class="quiz-footer">
+          <div class="quiz-nav">
+            <button id="prev-btn" class="btn btn-outline" disabled>← Prev</button>
+            <button id="next-btn" class="btn btn-outline" disabled>Next →</button>
+          </div>
+          <div class="flex gap-2 align-center">
+            <span style="font-size:0.75rem;color:var(--text-muted);">Q <span id="current-q">1</span>/<span id="total-q">10</span></span>
+            <button id="submit-btn" class="btn btn-primary" disabled>Submit Answer →</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- KEYBOARD HINT -->
+      <div style="text-align:center;margin-top:1.5rem;color:var(--text-muted);font-size:0.72rem;font-family:var(--font-display);letter-spacing:0.1em;">
+        Press <kbd style="background:rgba(0,245,255,0.1);border:1px solid var(--border-glow);padding:0.1rem 0.4rem;border-radius:3px;color:var(--neon-cyan);">A</kbd>
+        <kbd style="background:rgba(0,245,255,0.1);border:1px solid var(--border-glow);padding:0.1rem 0.4rem;border-radius:3px;color:var(--neon-cyan);">B</kbd>
+        <kbd style="background:rgba(0,245,255,0.1);border:1px solid var(--border-glow);padding:0.1rem 0.4rem;border-radius:3px;color:var(--neon-cyan);">C</kbd>
+        <kbd style="background:rgba(0,245,255,0.1);border:1px solid var(--border-glow);padding:0.1rem 0.4rem;border-radius:3px;color:var(--neon-cyan);">D</kbd>
+        to select · <kbd style="background:rgba(0,245,255,0.1);border:1px solid var(--border-glow);padding:0.1rem 0.4rem;border-radius:3px;color:var(--neon-cyan);">Enter</kbd> to submit
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js?v=2"></script>
+  <script src="js/auth.js?v=2"></script>
+  <script src="js/quiz.js"></script>
+  <script>
+    // Set quiz title from URL
+    const topic = new URLSearchParams(window.location.search).get('topic') || 'General';
+    document.getElementById('quiz-title').textContent = `${topic} Quiz`;
+    document.getElementById('quiz-subject').textContent = topic;
+  </script>
+</body>
+</html>

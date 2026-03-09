@@ -1,0 +1,18 @@
+[
+  {
+    "_id": "69ac819f6b3c646a11651f13",
+    "name": "Writam Samanta",
+    "email": "2305101@kiit.ac.in",
+    "password": "$2b$10$B9vMKbYp0o8nLIId1MvZSe.GXUzdNZWF9BhfHBrb3pp99SqPTzdTK",
+    "xp": 7850,
+    "level": 1,
+    "avatar": "WS",
+    "stats": {
+      "quizzesTaken": 11,
+      "avgScore": 71.36363636363636,
+      "streak": 0
+    },
+    "enrolledCourses": [],
+    "__v": 0
+  }
+]

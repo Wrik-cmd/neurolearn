@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Courses — NeuroLearn</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <style>
+    .courses-hero {
+      padding: 5rem 2rem 3rem;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    .filter-bar {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+      position: relative;
+      z-index: 1;
+    }
+    .filter-btn {
+      padding: 0.4rem 1.2rem;
+      border-radius: 20px;
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid var(--border-glow);
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: rgba(0,245,255,0.1);
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+      box-shadow: 0 0 15px rgba(0,245,255,0.15);
+    }
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+      position: relative;
+      z-index: 1;
+    }
+    .course-card {
+      padding: 0;
+      overflow: hidden;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+    }
+    .course-card-header {
+      padding: 1.75rem 1.75rem 1.25rem;
+      position: relative;
+    }
+    .course-card-icon {
+      font-size: 3rem;
+      display: block;
+      margin-bottom: 1rem;
+      animation: float 3s ease-in-out infinite;
+    }
+    .course-card:nth-child(2n) .course-card-icon { animation-delay: 0.5s; }
+    .course-card:nth-child(3n) .course-card-icon { animation-delay: 1s; }
+    .course-card-title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+    .course-card-desc { font-size: 0.83rem; color: var(--text-muted); line-height: 1.6; }
+    .course-card-footer {
+      padding: 1rem 1.75rem;
+      border-top: 1px solid rgba(0,245,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .course-meta { display: flex; gap: 0.75rem; align-items: center; font-size: 0.75rem; color: var(--text-muted); }
+    .course-card:hover .course-card-title { color: var(--neon-cyan); }
+
+    /* Topics Sidebar */
+    .course-topics {
+      position: fixed;
+      top: 0; right: -420px;
+      width: 420px;
+      height: 100vh;
+      background: rgba(4, 12, 28, 0.98);
+      border-left: 1px solid var(--border-glow);
+      backdrop-filter: blur(30px);
+      z-index: 2000;
+      transition: right 0.4s cubic-bezier(0.23,1,0.32,1);
+      overflow-y: auto;
+      padding: 2rem;
+    }
+    .course-topics.open { right: 0; }
+    .topics-close {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      background: none; border: 1px solid var(--border-glow);
+      color: var(--text-muted); font-size: 1.2rem;
+      width: 36px; height: 36px; border-radius: 6px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: var(--transition);
+    }
+    .topics-close:hover { border-color: var(--neon-cyan); color: var(--neon-cyan); }
+    .topic-item {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 0.85rem 1rem;
+      border-radius: 8px; margin-bottom: 0.5rem;
+      background: rgba(0,245,255,0.03); border: 1px solid rgba(0,245,255,0.08);
+      transition: var(--transition); text-decoration: none; color: var(--text-primary);
+    }
+    .topic-item:hover {
+      background: rgba(0,245,255,0.08); border-color: rgba(0,245,255,0.3);
+      transform: translateX(4px);
+    }
+    .topic-num {
+      font-family: var(--font-display); font-size: 0.65rem;
+      color: var(--neon-cyan); min-width: 20px;
+    }
+    .backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1999; display: none; }
+    .backdrop.show { display: block; }
+  </style>
+</head>
+<body>
+  <div class="scan-lines"></div>
+
+  <header>
+    <nav>
+      <a href="index.html" class="nav-logo glitch" data-text="NEUROLEARN">NEUROLEARN</a>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="course.html" class="active">Courses</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="recommendation.html">AI Recs</a></li>
+        <li><a href="profile.html">Profile</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="login.html" class="btn btn-outline btn-sm">Login</a>
+        <a href="signup.html" class="btn btn-primary btn-sm">Sign Up</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="page-wrapper">
+    <div class="courses-hero">
+      <h1 class="section-title fade-in-up">Browse Courses</h1>
+      <p class="section-subtitle fade-in-up delay-1">Master in-demand topics with AI-adaptive quizzes and smart recommendations.</p>
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">All Topics</button>
+      <button class="filter-btn" data-filter="easy">Easy</button>
+      <button class="filter-btn" data-filter="medium">Medium</button>
+      <button class="filter-btn" data-filter="hard">Hard</button>
+      <button class="filter-btn" data-filter="algorithms">Algorithms</button>
+      <button class="filter-btn" data-filter="web">Web Dev</button>
+      <button class="filter-btn" data-filter="backend">Backend</button>
+      <button class="filter-btn" data-filter="databases">Databases</button>
+      <button class="filter-btn" data-filter="systems">CS Basics</button>
+      <button class="filter-btn" data-filter="ai">AI / ML</button>
+    </div>
+
+    <div class="courses-grid" id="courses-grid">
+      <!-- Filled by JS -->
+    </div>
+  </div>
+
+  <!-- Topics Sidebar -->
+  <div class="backdrop" id="backdrop"></div>
+  <aside class="course-topics" id="topics-panel">
+    <button class="topics-close" id="topics-close">✕</button>
+    <div id="topics-content"></div>
+  </aside>
+
+  <footer><span>NEUROLEARN</span> &copy; 2025</footer>
+
+  <script src="js/api.js?v=2"></script>
+  <script src="js/auth.js?v=2"></script>
+  <script>
+    let coursesData = [];
+    const topicsMap = {
+      'Data Structures & Algorithms': ['Introduction to Big O Notation','Arrays & Strings','Linked Lists','Stacks & Queues','Hash Tables','Binary Trees','Graph Traversal','Sorting Algorithms','Dynamic Programming','Recursion Deep Dive'],
+      'JavaScript Mastery': ['Variables & Data Types','Functions & Closures','Prototypes & Classes','Async/Await & Promises','ES6+ Features','Modules & Bundlers','DOM Manipulation','Event Loop','Error Handling','Testing with Jest'],
+      'System Design Basics': ['Scalability Basics','Load Balancing','Caching Strategies','Database Sharding','CAP Theorem','Microservices','API Design','Message Queues','Monitoring & Alerts','Case Studies'],
+      'Web Fundamentals': ['HTML Semantics','CSS Flexbox & Grid','Responsive Design','Accessibility (a11y)','Browser Storage','Authentication Basics','RESTful APIs','Web Performance','SEO Fundamentals','Web Security Practices'],
+      'Database Design': ['Relational vs NoSQL','ACID Properties','Normalization Forms','Indexes & Performance','Joins & Subqueries','Transactions','Connection Pooling','Replication Basics','Data Modeling','Graph Databases'],
+      'Python for Data Science': ['Python Syntax Basics', 'NumPy Arrays', 'Pandas DataFrames', 'Data Cleaning', 'Matplotlib & Seaborn', 'Scikit-Learn Basics', 'Linear Regression', 'Logistic Regression', 'Decision Trees', 'Model Evaluation'],
+      'React.js Essentials': ['JSX & Components', 'Props & State', 'Component Lifecycle', 'React Hooks (useState)', 'React Hooks (useEffect)', 'Handling Events', 'Context API', 'React Router', 'Form Handling', 'Performance Optimization'],
+      'DevOps & Deployment': ['Linux Command Line', 'Bash Scripting', 'Git & GitHub', 'Docker Containers', 'Docker Compose', 'CI/CD Pipelines (GitHub Actions)', 'AWS Basics (EC2 & S3)', 'Nginx & Reverse Proxies', 'Kubernetes Architecture', 'Infrastructure as Code (Terraform)'],
+      'Computer Networks': ['OSI Model', 'TCP/IP', 'Routing Protocols', 'IP Addressing', 'DNS & DHCP', 'Transport Layer (TCP/UDP)', 'Network Security', 'Wireless Networks', 'Application Layer Protocols', 'Network Topologies'],
+      'Operating Systems': ['Processes & Threads', 'CPU Scheduling', 'Memory Management', 'Virtual Memory', 'Concurrency & Deadlocks', 'File Systems', 'I/O Systems', 'Security & Protection', 'Distributed Systems', 'OS Structures'],
+      'Computer Organization': ['Instruction Set Architecture', 'ALUs & CPU Datapaths', 'Memory Hierarchy & Cache', 'Pipelining', 'Instruction Level Parallelism', 'I/O & Interrupts', 'Microprogramming', 'Number Systems & Logic Gates', 'Multicore Processors', 'Assembly Language Basics'],
+      'Node.js Mastery': ['Node.js Architecture', 'Non-Blocking I/O', 'Callbacks & Promises', 'Event Loop Deep Dive', 'Modules & CommonJS', 'npm & Package Management', 'Streams & Buffers', 'HTTP Server Basics', 'File System (fs)', 'Error Handling in Node'],
+      'Express.js Framework': ['Express Basics', 'Middleware Functions', 'Routing', 'Error Handling Middleware', 'Template Engines', 'Express Security (Helmet)', 'Body Parsing', 'Static Files', 'Integration with Databases', 'Express Best Practices'],
+      'MongoDB Deep Dive': ['Document Model vs Relational', 'BSON Types', 'CRUD Operations', 'Complex Queries ($or, $and)', 'Indexing Strategies', 'Aggregation Framework', 'Replica Sets', 'Sharding', 'GridFS', 'Mongoose ODM Basics'],
+      'AI & Machine Learning': ['Intro to AI vs ML', 'Supervised vs Unsupervised', 'Neural Networks Basics', 'Deep Learning Concepts', 'Natural Language Processing', 'Computer Vision', 'Model Bias & Fairness', 'Training & Testing Splits', 'Hyperparameters', 'Deploying ML Models']
+    };
+    
+    async function initCourses() {
+      try {
+        const res = await API.courses.getAll();
+        if (res.success && res.data) coursesData = res.data;
+      } catch (err) {}
+      
+      if (!coursesData.length) {
+        document.getElementById('courses-grid').innerHTML = '<div style="color:var(--text-muted);grid-column:1/-1;text-align:center;">No courses found. Connect backend!</div>';
+        return;
+      }
+      renderCourses();
+    }
+
+    function renderCourses(filter = 'all') {
+      const grid = document.getElementById('courses-grid');
+      const filtered = filter === 'all'
+        ? coursesData
+        : coursesData.filter(c => c.difficulty.toLowerCase() === filter || c.category === filter);
+
+      grid.innerHTML = filtered.map((c, i) => `
+        <div class="card course-card fade-in-up" style="animation-delay:${i*0.06}s" data-id="${c.id}">
+          <div class="course-card-header">
+            <span class="course-card-icon">${c.icon}</span>
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem;margin-bottom:0.5rem;">
+              <h3 class="course-card-title">${c.title}</h3>
+              <span class="badge badge-${c.difficulty==='Hard'?'orange':c.difficulty==='Medium'?'purple':'cyan'}">${c.difficulty}</span>
+            </div>
+            <p class="course-card-desc">${c.desc}</p>
+            ${c.progress > 0 ? `
+              <div style="margin-top:1rem;">
+                <div class="progress-bar"><div class="progress-fill" style="width:${c.progress}%;"></div></div>
+                <div style="font-size:0.72rem;color:var(--text-muted);margin-top:0.25rem;">${c.progress}% complete</div>
+              </div>
+            ` : ''}
+          </div>
+          <div class="course-card-footer">
+            <div class="course-meta">
+              <span>📖 ${c.topics} topics</span>
+              <span>👥 ${(c.enrolled/1000).toFixed(1)}K enrolled</span>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openTopics('${c.id}', '${c.title.replace(/'/g, "\\'")}')">
+              ${c.progress > 0 ? 'Continue' : 'Explore'} →
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function openTopics(id, title) {
+      const panel = document.getElementById('topics-panel');
+      const content = document.getElementById('topics-content');
+      const backdrop = document.getElementById('backdrop');
+
+      panel.classList.add('open');
+      backdrop.classList.add('show');
+      content.innerHTML = '<div style="margin-top:2rem;text-align:center;color:var(--text-muted);">Loading topics...</div>';
+
+      try {
+        const res = await API.courses.getTopics(id);
+        const topics = res.success ? res.data : [];
+
+        content.innerHTML = `
+          <h2 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:0.25rem;color:var(--neon-cyan);">${title}</h2>
+          <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:1.5rem;">${topics.length} topics available</p>
+          <div style="margin-bottom:1rem;">
+            ${topics.map((t, i) => `
+              <a href="learn.html?courseId=${id}&course=${encodeURIComponent(title)}&topicId=${t._id}&topic=${encodeURIComponent(t.title)}" class="topic-item" style="display:flex;flex-direction:column;align-items:flex-start;gap:0.3rem;">
+                <div style="display:flex;width:100%;align-items:center;gap:0.5rem;">
+                  <span class="topic-num">${String(i+1).padStart(2,'0')}</span>
+                  <span style="flex:1;">${t.title}</span>
+                  <a href="quiz.html?topic=${encodeURIComponent(t.title)}" class="btn btn-sm btn-outline" onclick="event.stopPropagation()">Quiz</a>
+                </div>
+                <div style="font-size:0.75rem;color:var(--text-muted);margin-left:2.5rem;">${t.description ? t.description.substring(0, 50) + '...' : ''}</div>
+              </a>
+            `).join('')}
+          </div>
+          <a href="quiz.html?course=${id}" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:1rem;">
+            Take Full Course Quiz →
+          </a>
+        `;
+      } catch(e) {
+        content.innerHTML = '<div style="color:var(--neon-orange);padding:1rem;">Failed to load.</div>';
+      }
+    }
+
+    document.getElementById('topics-close').addEventListener('click', closeTopics);
+    document.getElementById('backdrop').addEventListener('click', closeTopics);
+    function closeTopics() {
+      document.getElementById('topics-panel').classList.remove('open');
+      document.getElementById('backdrop').classList.remove('show');
+    }
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        renderCourses(this.dataset.filter);
+      });
+    });
+
+    initCourses();
+  </script>
+</body>
+</html>

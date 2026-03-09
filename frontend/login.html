@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — NeuroLearn</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <style>
+    .auth-page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* LEFT PANEL */
+    .auth-visual {
+      background: linear-gradient(135deg, rgba(0,245,255,0.06) 0%, rgba(180,79,255,0.06) 100%);
+      border-right: 1px solid var(--border-glow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 50%, rgba(0,245,255,0.08), transparent 60%),
+                  radial-gradient(circle at 70% 50%, rgba(180,79,255,0.08), transparent 60%);
+      pointer-events: none;
+    }
+
+    .auth-visual-logo {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 30px rgba(0,245,255,0.5);
+      margin-bottom: 3rem;
+      animation: logoPulse 3s ease-in-out infinite;
+    }
+
+    .auth-visual-graphic {
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      border: 2px solid rgba(0,245,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      position: relative;
+      margin-bottom: 2rem;
+      animation: float 4s ease-in-out infinite;
+      background: radial-gradient(circle, rgba(0,245,255,0.05), transparent);
+    }
+
+    .auth-visual-graphic::before,
+    .auth-visual-graphic::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(0,245,255,0.15);
+      animation: ringExpand 3s ease-in-out infinite;
+    }
+
+    .auth-visual-graphic::before { width: 240px; height: 240px; animation-delay: 0s; }
+    .auth-visual-graphic::after  { width: 280px; height: 280px; animation-delay: 0.5s; }
+
+    @keyframes ringExpand {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50%       { opacity: 0.8; transform: scale(1.05); }
+    }
+
+    .auth-taglines { text-align: center; }
+    .auth-taglines h2 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    .auth-taglines p { color: var(--text-muted); font-size: 0.9rem; }
+
+    /* RIGHT PANEL */
+    .auth-form-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 3rem;
+    }
+
+    .auth-form-wrap {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .auth-form-title {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.4rem;
+      animation: fadeInUp 0.5s ease both;
+    }
+
+    .auth-form-subtitle {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      margin-bottom: 2rem;
+      animation: fadeInUp 0.5s 0.05s ease both;
+    }
+
+    .auth-form-subtitle a { color: var(--neon-cyan); text-decoration: none; transition: opacity 0.2s; }
+    .auth-form-subtitle a:hover { opacity: 0.8; }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .input-with-icon {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1rem;
+      pointer-events: none;
+    }
+
+    .input-with-icon input {
+      padding-left: 2.75rem !important;
+    }
+
+    .input-toggle {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+
+    .input-toggle:hover { color: var(--neon-cyan); }
+
+    .auth-error {
+      background: rgba(255, 68, 102, 0.1);
+      border: 1px solid rgba(255, 68, 102, 0.3);
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      font-size: 0.82rem;
+      color: #ff4466;
+      display: none;
+    }
+
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-glow);
+    }
+
+    .btn-full { width: 100%; justify-content: center; }
+
+    .forgot-link {
+      text-align: right;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: -0.75rem;
+    }
+
+    .forgot-link a {
+      color: var(--neon-cyan);
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+
+    .forgot-link a:hover { opacity: 1; }
+
+    /* Input shake animation */
+    @keyframes inputShake {
+      0%, 100% { transform: translateX(0); border-color: #ff4466; }
+      20%  { transform: translateX(-5px); }
+      40%  { transform: translateX(5px); }
+      60%  { transform: translateX(-3px); }
+      80%  { transform: translateX(3px); }
+    }
+
+    .input-shake { animation: inputShake 0.4s ease !important; }
+
+    @media (max-width: 768px) {
+      .auth-page { grid-template-columns: 1fr; }
+      .auth-visual { display: none; }
+      .auth-form-panel { padding: 6rem 1.5rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="scan-lines"></div>
+
+  <header>
+    <nav>
+      <a href="index.html" class="nav-logo">NEUROLEARN</a>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="course.html">Courses</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="signup.html" class="btn btn-primary btn-sm">Sign Up</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="auth-page" style="padding-top:64px;">
+
+    <!-- LEFT: Visual -->
+    <div class="auth-visual">
+      <div class="auth-visual-logo glitch" data-text="NEUROLEARN">NEUROLEARN</div>
+      <div class="auth-visual-graphic">🧠</div>
+      <div class="auth-taglines">
+        <h2>Welcome Back, Learner</h2>
+        <p>Your personalized AI dashboard awaits.</p>
+      </div>
+    </div>
+
+    <!-- RIGHT: Form -->
+    <div class="auth-form-panel">
+      <div class="auth-form-wrap">
+        <h1 class="auth-form-title">Sign In</h1>
+        <p class="auth-form-subtitle">
+          Don't have an account? <a href="signup.html">Create one free →</a>
+        </p>
+
+        <form id="login-form" class="auth-form" novalidate>
+          <div id="login-error" class="auth-error"></div>
+
+          <div class="form-group fade-in-up delay-1">
+            <label for="login-email">Email Address</label>
+            <div class="input-with-icon">
+              <span class="input-icon">✉️</span>
+              <input type="email" id="login-email" name="email"
+                     placeholder="you@example.com" autocomplete="email" required />
+            </div>
+          </div>
+
+          <div class="form-group fade-in-up delay-2">
+            <label for="login-password">Password</label>
+            <div class="input-with-icon">
+              <span class="input-icon">🔒</span>
+              <input type="password" id="login-password" name="password"
+                     placeholder="Enter your password" autocomplete="current-password" required />
+              <button type="button" class="input-toggle toggle-password" data-target="login-password">👁️</button>
+            </div>
+          </div>
+
+          <div class="forgot-link fade-in-up delay-2">
+            <a href="#">Forgot password?</a>
+          </div>
+
+          <button type="submit" id="login-btn" class="btn btn-primary btn-full btn-lg fade-in-up delay-3">
+            ACCESS SYSTEM →
+          </button>
+
+          <div class="auth-divider fade-in-up delay-4">or continue with</div>
+
+          <div class="flex gap-2 fade-in-up delay-5" style="justify-content:center;">
+            <button type="button" class="btn btn-outline" onclick="demoLogin()" style="flex:1;justify-content:center;">
+              ⚡ Demo Account
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/api.js?v=2"></script>
+  <script src="js/auth.js?v=2"></script>
+  <script>
+    function demoLogin() {
+      localStorage.setItem('nl_token', 'demo-token-' + Date.now());
+      localStorage.setItem('nl_user', JSON.stringify({
+        id: 1, name: 'Alex Chen', email: 'alex@neurolearn.io',
+        xp: 2450, level: 12, avatar: 'AC'
+      }));
+      window.location.href = 'dashboard.html';
+    }
+  </script>
+</body>
+</html>
