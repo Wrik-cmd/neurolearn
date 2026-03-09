@@ -1,0 +1,2 @@
+# neurolearn
+Minor project
