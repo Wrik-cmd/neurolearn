@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learn — NeuroLearn</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <style>
+    .learn-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr; /* Removed right panel */
+      min-height: calc(100vh - 64px);
+      position: relative;
+      z-index: 1;
+    }
+    /* TOC PANEL */
+    .toc-panel {
+      border-right: 1px solid var(--border-glow);
+      padding: 2rem 1rem;
+      position: sticky; top: 64px;
+      height: calc(100vh - 64px); overflow-y: auto;
+      background: rgba(4,12,28,0.9);
+      animation: slideFromLeft 0.5s ease both;
+    }
+    @keyframes slideFromLeft { from{transform:translateX(-20px);opacity:0} to{transform:translateX(0);opacity:1} }
+    .toc-title { font-family:var(--font-display); font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); padding:0 0.75rem 0.75rem; }
+    .toc-item {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.55rem 0.75rem; border-radius: 6px;
+      color: var(--text-muted); font-size: 0.83rem;
+      cursor: pointer; transition: var(--transition);
+      position: relative;
+    }
+    .toc-item:hover { color: var(--neon-cyan); background: rgba(0,245,255,0.05); }
+    .toc-item.active { color: var(--neon-cyan); background: rgba(0,245,255,0.08); border-left: 2px solid var(--neon-cyan); }
+    .toc-check { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid rgba(0,245,255,0.3); flex-shrink: 0; transition: var(--transition); }
+    .toc-item.done .toc-check { background: var(--neon-green); border-color: var(--neon-green); box-shadow: 0 0 6px var(--neon-green); }
+
+    /* CONTENT */
+    .content-area {
+      padding: 2.5rem 3rem;
+      max-width: 780px;
+    }
+    .lesson-breadcrumb { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 1.5rem; animation: fadeInUp 0.4s ease both; }
+    .lesson-breadcrumb a { color: var(--neon-cyan); text-decoration: none; }
+    .lesson-title { font-family:var(--font-display); font-size:2rem; font-weight:700; margin-bottom:0.75rem; animation: fadeInUp 0.5s 0.05s ease both; }
+    .lesson-meta { display:flex; gap:1rem; align-items:center; margin-bottom:2.5rem; animation: fadeInUp 0.5s 0.1s ease both; }
+
+    .content-block { animation: fadeInUp 0.6s 0.15s ease both; }
+    .content-block p { font-size:0.98rem; line-height:1.9; color:var(--text-primary); margin-bottom:1.5rem; }
+    .content-block h2 { font-family:var(--font-display); font-size:1.1rem; color:var(--neon-cyan); margin:2rem 0 0.75rem; letter-spacing:0.05em; }
+    .content-block h3 { font-family:var(--font-display); font-size:0.9rem; color:var(--text-primary); margin:1.5rem 0 0.5rem; }
+
+    /* Code Block */
+    .code-block {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(0,245,255,0.15);
+      border-left: 3px solid var(--neon-cyan);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .code-block::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, var(--neon-cyan), transparent);
+      animation: codeScan 3s linear infinite;
+    }
+    @keyframes codeScan {
+      0%   { opacity:0; transform:scaleX(0); transform-origin:left; }
+      50%  { opacity:1; transform:scaleX(1); }
+      100% { opacity:0; transform:scaleX(0); transform-origin:right; }
+    }
+    .code-block pre { font-family:'Courier New', monospace; font-size:0.85rem; color:#a8d8f0; line-height:1.7; white-space:pre-wrap; margin:0; }
+    .code-lang { position:absolute; top:0.75rem; right:1rem; font-family:var(--font-display); font-size:0.6rem; letter-spacing:0.1em; color:var(--neon-cyan); opacity:0.6; }
+
+    /* Callout */
+    .callout {
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+      display: flex; gap: 1rem;
+      border: 1px solid;
+      animation: fadeInUp 0.5s ease both;
+    }
+    .callout.info   { background:rgba(0,245,255,0.05); border-color:rgba(0,245,255,0.2); }
+    .callout.tip    { background:rgba(57,255,20,0.05); border-color:rgba(57,255,20,0.2); }
+    .callout.warn   { background:rgba(255,107,53,0.05); border-color:rgba(255,107,53,0.2); }
+    .callout-icon   { font-size:1.2rem; flex-shrink:0; }
+    .callout-body   { font-size:0.88rem; line-height:1.7; }
+    .callout.info .callout-body   { color:rgba(0,245,255,0.9); }
+    .callout.tip  .callout-body   { color:rgba(57,255,20,0.9); }
+    .callout.warn .callout-body   { color:rgba(255,107,53,0.9); }
+
+    /* Lesson Nav */
+    .lesson-nav {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 3rem; padding-top: 2rem;
+      border-top: 1px solid var(--border-glow);
+    }
+
+    /* RIGHT SIDEBAR */
+    .info-panel {
+      border-left: 1px solid var(--border-glow);
+      padding: 2rem 1.25rem;
+      position: sticky; top: 64px;
+      height: calc(100vh - 64px); overflow-y: auto;
+      background: rgba(4,12,28,0.9);
+      animation: slideFromRight 0.5s ease both;
+    }
+    @keyframes slideFromRight { from{transform:translateX(20px);opacity:0} to{transform:translateX(0);opacity:1} }
+    .info-section { margin-bottom: 2rem; }
+    .info-section-title { font-family:var(--font-display); font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-muted); margin-bottom:0.75rem; }
+    .key-term {
+      display:flex; align-items:flex-start; gap:0.5rem;
+      padding:0.6rem; border-radius:6px;
+      background:rgba(0,245,255,0.03); border:1px solid rgba(0,245,255,0.06);
+      margin-bottom:0.5rem; font-size:0.8rem; transition:var(--transition);
+    }
+    .key-term:hover { background:rgba(0,245,255,0.07); border-color:rgba(0,245,255,0.2); }
+    .key-term-word { color:var(--neon-cyan); font-weight:600; font-size:0.78rem; }
+    .key-term-def  { color:var(--text-muted); font-size:0.75rem; margin-top:0.15rem; }
+
+    @media (max-width:1100px) { .learn-layout{grid-template-columns:1fr} .toc-panel,.info-panel{display:none} }
+    @media (max-width:768px)  { .content-area{padding:2rem 1.25rem} }
+  </style>
+</head>
+<body>
+  <div class="scan-lines"></div>
+
+  <header>
+    <nav>
+      <a href="index.html" class="nav-logo glitch" data-text="NEUROLEARN">NEUROLEARN</a>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="course.html">Courses</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="recommendation.html">AI Recs</a></li>
+        <li><a href="profile.html">Profile</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="quiz.html" class="btn btn-primary btn-sm">Take Quiz →</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="page-wrapper">
+    <div class="learn-layout">
+
+      <!-- TOC -->
+      <aside class="toc-panel">
+        <div class="toc-title">Contents</div>
+        <div id="toc-list">
+          <div class="toc-item done"  onclick="scrollToSection('intro')">    <div class="toc-check"></div> Introduction</div>
+          <div class="toc-item active"onclick="scrollToSection('concept')">  <div class="toc-check"></div> Core Concept</div>
+          <div class="toc-item"       onclick="scrollToSection('examples')"> <div class="toc-check"></div> Code Examples</div>
+          <div class="toc-item"       onclick="scrollToSection('tips')">     <div class="toc-check"></div> Best Practices</div>
+          <div class="toc-item"       onclick="scrollToSection('summary')">  <div class="toc-check"></div> Summary</div>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="content-area">
+        <nav class="lesson-breadcrumb">
+          <a href="course.html">Courses</a> → <a href="course.html" id="breadcrumb-course">...</a> → <span id="lesson-name">...</span>
+        </nav>
+
+        <h1 class="lesson-title" id="lesson-topic">...</h1>
+
+        <div class="lesson-meta">
+          <span class="badge badge-purple">Core</span>
+          <span style="color:var(--text-muted);font-size:0.8rem;">⏱ 12 min read</span>
+        </div>
+
+        <div class="content-block" id="content-block">
+          <div style="text-align:center;padding:3rem;color:var(--neon-cyan);">Loading module content...</div>
+        </div>
+      </main>
+
+
+
+    </div>
+  </div>
+
+  <footer><span>NEUROLEARN</span> &copy; 2025</footer>
+
+  <script src="js/api.js?v=2"></script>
+  <script src="js/auth.js?v=2"></script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const courseId = urlParams.get('courseId');
+    const topicId = urlParams.get('topicId');
+    const course = urlParams.get('course') || 'Course Overview';
+    const topic = urlParams.get('topic') || 'Learning Module';
+
+    document.getElementById('breadcrumb-course').textContent = course;
+    document.getElementById('lesson-topic').textContent = topic;
+    document.getElementById('lesson-name').textContent = topic;
+    // document.getElementById('quiz-btn') removed
+
+    async function loadContent() {
+      if (!courseId) {
+        document.getElementById('content-block').innerHTML = '<div style="color:var(--neon-orange);padding:2rem;">No course selected. Return to <a href="course.html" style="color:var(--neon-cyan)">Courses</a>.</div>';
+        return;
+      }
+
+      try {
+        const res = await API.courses.getTopics(courseId);
+        if (res.success && res.data) {
+          const t = res.data.find(x => (topicId && x._id === topicId) || x.title === topic);
+          if (t) {
+            document.getElementById('content-block').innerHTML = `
+              <section id="intro">
+                <h2>Module Overview</h2>
+                <p style="font-size:1.05rem;color:var(--text-primary);">${t.description}</p>
+              </section>
+              <section id="concept" style="margin-top:2rem;">
+                <h2>Deep Dive</h2>
+                ${t.content}
+              </section>
+              <div class="lesson-nav">
+                <a href="course.html" class="btn btn-outline">← Back to Courses</a>
+                <div class="flex gap-2">
+                  <a href="quiz.html?topic=${encodeURIComponent(topic)}" class="btn btn-primary">Take Quiz →</a>
+                </div>
+              </div>
+            `;
+          } else {
+            document.getElementById('content-block').innerHTML = '<div style="color:var(--neon-orange);padding:2rem;">Topic content missing from the database.</div>';
+          }
+        }
+      } catch (err) {
+        document.getElementById('content-block').innerHTML = '<div style="color:#ff4466;padding:2rem;">Failed to load from database.</div>';
+      }
+    }
+
+    loadContent();
+  </script>
+</body>
+</html>

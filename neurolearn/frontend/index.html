@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeuroLearn — Adaptive AI Learning Platform</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <style>
+    /* ---- HERO ---- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      animation: orbDrift 8s ease-in-out infinite alternate;
+    }
+
+    .hero-bg-orb.orb-1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(0,245,255,0.12), transparent 70%);
+      top: -100px; left: -100px;
+      animation-delay: 0s;
+    }
+
+    .hero-bg-orb.orb-2 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(180,79,255,0.1), transparent 70%);
+      bottom: -200px; right: -150px;
+      animation-delay: -4s;
+    }
+
+    .hero-bg-orb.orb-3 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(57,255,20,0.06), transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation-delay: -2s;
+    }
+
+    @keyframes orbDrift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(30px, 20px) scale(1.1); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      border: 1px solid rgba(0,245,255,0.3);
+      border-radius: 20px;
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--neon-cyan);
+      background: rgba(0,245,255,0.05);
+      margin-bottom: 2rem;
+      animation: fadeInUp 0.6s ease both;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 7vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.6s 0.1s ease both;
+    }
+
+    .hero-title .line-1 { display: block; color: var(--text-primary); }
+    .hero-title .line-2 {
+      display: block;
+      background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-purple) 50%, var(--neon-green) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% 100%;
+      animation: fadeInUp 0.6s 0.1s ease both, gradientShift 4s ease-in-out infinite;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50%       { background-position: 100% 50%; }
+    }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.8;
+      animation: fadeInUp 0.6s 0.2s ease both;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+      animation: fadeInUp 0.6s 0.3s ease both;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.6s 0.4s ease both;
+    }
+
+    .hero-stat {
+      text-align: center;
+    }
+
+    .hero-stat-value {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--neon-cyan);
+      display: block;
+    }
+
+    .hero-stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .hero-scroll-indicator {
+      position: absolute;
+      bottom: 2rem; left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      animation: scrollBounce 2s ease-in-out infinite;
+    }
+
+    .scroll-arrow {
+      width: 20px; height: 20px;
+      border-right: 2px solid var(--neon-cyan);
+      border-bottom: 2px solid var(--neon-cyan);
+      transform: rotate(45deg);
+    }
+
+    @keyframes scrollBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ---- FEATURES ---- */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .feature-card {
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: 1rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .feature-card:nth-child(2) .feature-icon { animation-delay: 0.5s; }
+    .feature-card:nth-child(3) .feature-icon { animation-delay: 1s; }
+    .feature-card:nth-child(4) .feature-icon { animation-delay: 1.5s; }
+    .feature-card:nth-child(5) .feature-icon { animation-delay: 2s; }
+    .feature-card:nth-child(6) .feature-icon { animation-delay: 2.5s; }
+
+    .feature-title {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--neon-cyan);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    .feature-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; }
+
+    .feature-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .feature-card:hover::after { opacity: 0.6; }
+
+    /* ---- CTA SECTION ---- */
+    .cta-section {
+      text-align: center;
+      padding: 5rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0,245,255,0.05), transparent);
+      pointer-events: none;
+    }
+
+    @media (max-width: 768px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="scan-lines"></div>
+
+  <!-- HEADER -->
+  <header>
+    <nav>
+      <a href="index.html" class="nav-logo glitch" data-text="NEUROLEARN">NEUROLEARN</a>
+      <ul>
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="course.html">Courses</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="recommendation.html">AI Recs</a></li>
+        <li><a href="profile.html">Profile</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="login.html" class="btn btn-outline btn-sm">Login</a>
+        <a href="signup.html" class="btn btn-primary btn-sm">Get Started</a>
+      </div>
+      <div class="nav-hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </nav>
+  </header>
+
+  <div class="page-wrapper">
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <div class="hero-bg-orb orb-1"></div>
+      <div class="hero-bg-orb orb-2"></div>
+      <div class="hero-bg-orb orb-3"></div>
+
+      <div class="hero-content">
+        <div class="hero-eyebrow">
+          <span class="notif-dot"></span>
+          AI-Powered Adaptive Learning
+        </div>
+
+        <h1 class="hero-title">
+          <span class="line-1">Master Any Subject</span>
+          <span class="line-2">At Neural Speed</span>
+        </h1>
+
+        <p class="hero-desc">
+          NeuroLearn adapts to your learning style in real time. Take quizzes, get personalized AI recommendations, and track your progress across hundreds of topics.
+        </p>
+
+        <div class="hero-cta">
+          <a href="signup.html" class="btn btn-primary btn-lg">Start Learning Free →</a>
+          <a href="course.html" class="btn btn-outline btn-lg">Browse Courses</a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-value">50K+</span>
+            <span class="hero-stat-label">Active Learners</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">2000+</span>
+            <span class="hero-stat-label">Quiz Questions</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">98%</span>
+            <span class="hero-stat-label">Satisfaction Rate</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">AI</span>
+            <span class="hero-stat-label">Personalized</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-scroll-indicator">
+        <span>Scroll</span>
+        <div class="scroll-arrow"></div>
+      </div>
+    </section>
+
+    <div class="neon-divider"></div>
+
+    <!-- FEATURES -->
+    <section class="section" id="features">
+      <h2 class="section-title">Why NeuroLearn?</h2>
+      <p class="section-subtitle">Everything you need to accelerate your learning journey.</p>
+
+      <div class="features-grid">
+        <div class="card feature-card fade-in-up delay-1">
+          <span class="feature-icon">🧠</span>
+          <h3 class="feature-title">AI-Adaptive Quizzes</h3>
+          <p class="feature-desc">Our neural engine adjusts question difficulty in real time based on your performance — maximizing learning efficiency.</p>
+        </div>
+        <div class="card feature-card fade-in-up delay-2">
+          <span class="feature-icon">📊</span>
+          <h3 class="feature-title">Deep Analytics</h3>
+          <p class="feature-desc">Track every metric: scores, streaks, weak spots, and progress velocity. See your brain's growth in data.</p>
+        </div>
+        <div class="card feature-card fade-in-up delay-3">
+          <span class="feature-icon">🎯</span>
+          <h3 class="feature-title">Smart Recommendations</h3>
+          <p class="feature-desc">AI analyzes your quiz history and pinpoints exactly what to study next for maximum score improvement.</p>
+        </div>
+        <div class="card feature-card fade-in-up delay-4">
+          <span class="feature-icon">⚡</span>
+          <h3 class="feature-title">Spaced Repetition</h3>
+          <p class="feature-desc">Content resurfaces at scientifically optimal intervals, locking knowledge deep into long-term memory.</p>
+        </div>
+        <div class="card feature-card fade-in-up delay-5">
+          <span class="feature-icon">🏆</span>
+          <h3 class="feature-title">Gamified Progress</h3>
+          <p class="feature-desc">Earn XP, unlock badges, maintain streaks, and climb leaderboards. Learning has never felt this rewarding.</p>
+        </div>
+        <div class="card feature-card fade-in-up delay-6">
+          <span class="feature-icon">🌐</span>
+          <h3 class="feature-title">100+ Topics</h3>
+          <p class="feature-desc">From algorithms to system design, web dev to databases — curated expert content across all major tech domains.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="neon-divider"></div>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <h2 class="section-title fade-in-up">Ready to Upgrade Your Brain?</h2>
+      <p class="section-subtitle fade-in-up delay-1">Join 50,000+ learners already training at neural speed.</p>
+      <div class="flex-center gap-2 mt-3 fade-in-up delay-2">
+        <a href="signup.html" class="btn btn-primary btn-lg">Create Free Account</a>
+        <a href="login.html"  class="btn btn-outline btn-lg">Sign In</a>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>NEUROLEARN</span> &copy; 2025 — Adaptive AI Learning Platform. All rights reserved.
+  </footer>
+
+  <script src="js/api.js?v=2"></script>
+  <script src="js/auth.js?v=2"></script>
+  <script>
+    // Hamburger menu
+    document.getElementById('hamburger')?.addEventListener('click', () => {
+      const ul = document.querySelector('nav ul');
+      if (ul) ul.style.display = ul.style.display === 'flex' ? 'none' : 'flex';
+    });
+  </script>
+</body>
+</html>
