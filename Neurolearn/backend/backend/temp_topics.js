@@ -1,0 +1,17 @@
+module.exports = {
+    'Data Structures & Algorithms': ['Introduction to Big O Notation','Arrays & Strings','Linked Lists','Stacks & Queues','Hash Tables','Binary Trees','Graph Traversal','Sorting Algorithms','Dynamic Programming','Recursion Deep Dive'],
+    'JavaScript Mastery': ['Variables & Data Types','Functions & Closures','Prototypes & Classes','Async/Await & Promises','ES6+ Features','Modules & Bundlers','DOM Manipulation','Event Loop','Error Handling','Testing with Jest'],
+    'System Design Basics': ['Scalability Basics','Load Balancing','Caching Strategies','Database Sharding','CAP Theorem','Microservices','API Design','Message Queues','Monitoring & Alerts','Case Studies'],
+    'Web Fundamentals': ['HTML Semantics','CSS Flexbox & Grid','Responsive Design','Accessibility (a11y)','Browser Storage','Authentication Basics','RESTful APIs','Web Performance','SEO Fundamentals','Web Security Practices'],
+    'Database Design': ['Relational vs NoSQL','ACID Properties','Normalization Forms','Indexes & Performance','Joins & Subqueries','Transactions','Connection Pooling','Replication Basics','Data Modeling','Graph Databases'],
+    'Python for Data Science': ['Python Syntax Basics', 'NumPy Arrays', 'Pandas DataFrames', 'Data Cleaning', 'Matplotlib & Seaborn', 'Scikit-Learn Basics', 'Linear Regression', 'Logistic Regression', 'Decision Trees', 'Model Evaluation'],
+    'React.js Essentials': ['JSX & Components', 'Props & State', 'Component Lifecycle', 'React Hooks (useState)', 'React Hooks (useEffect)', 'Handling Events', 'Context API', 'React Router', 'Form Handling', 'Performance Optimization'],
+    'DevOps & Deployment': ['Linux Command Line', 'Bash Scripting', 'Git & GitHub', 'Docker Containers', 'Docker Compose', 'CI/CD Pipelines', 'AWS Basics', 'Nginx Deep Dive', 'Kubernetes Architecture', 'IaC with Terraform'],
+    'Computer Networks': ['OSI Model', 'TCP/IP', 'Routing Protocols', 'IP Addressing', 'DNS & DHCP', 'Transport Layer', 'Network Security', 'Wireless Networks', 'Application Layer', 'Network Topologies'],
+    'Operating Systems': ['Processes & Threads', 'CPU Scheduling', 'Memory Management', 'Virtual Memory', 'Concurrency & Deadlocks', 'File Systems', 'I/O Systems', 'Security', 'Distributed Systems', 'OS Structures'],
+    'Computer Organization': ['ISA', 'ALUs & Datapaths', 'Memory Hierarchy', 'Pipelining', 'Instruction Level Parallelism', 'I/O & Interrupts', 'Microprogramming', 'Logic Gates', 'Multicore Processors', 'Assembly Language'],
+    'Node.js Mastery': ['Node.js Architecture', 'Non-Blocking I/O', 'Callbacks & Promises', 'Event Loop Deep Dive', 'Modules & CommonJS', 'npm & Package Management', 'Streams', 'HTTP Server Basics', 'File System', 'Error Handling'],
+    'Express.js Framework': ['Express Basics', 'Middleware Functions', 'Routing', 'Error Handling Middleware', 'Template Engines', 'Express Security', 'Body Parsing', 'Static Files', 'Database Integration', 'Best Practices'],
+    'MongoDB Deep Dive': ['Document Model', 'BSON Types', 'CRUD Operations', 'Complex Queries ($or, $and)', 'Indexing Strategies', 'Aggregation Framework', 'Replica Sets', 'Sharding', 'GridFS', 'Mongoose Basics'],
+    'AI & Machine Learning': ['Intro to AI vs ML', 'Supervised vs Unsupervised', 'Neural Networks', 'Deep Learning Concepts', 'NLP', 'Computer Vision', 'Model Bias & Fairness', 'Training/Test Splits', 'Hyperparameters', 'Deploying Models']
+  };
