@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Learn — NeuroLearn</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "surface-dim": "#0f141b",
+                "surface": "#0f141b",
+                "surface-bright": "#353942",
+                "surface-container-lowest": "#090e15",
+                "surface-container-low": "#171c23",
+                "surface-container": "#1b2027",
+                "surface-container-high": "#252a32",
+                "surface-container-highest": "#30353d",
+                "surface-variant": "#30353d",
+                "on-surface": "#dee2ed",
+                "on-surface-variant": "#c1c6d7",
+                "background": "#0f141b",
+                "on-background": "#dee2ed",
+                "primary": "#3cd7ff",
+                "on-primary": "#003642",
+                "primary-container": "#009ebe",
+                "secondary": "#d1bcff",
+                "on-secondary": "#3c0090",
+                "secondary-container": "#7000ff",
+                "tertiary": "#00e290",
+                "tertiary-container": "#00a668",
+                "error": "#ffb4ab",
+                "outline": "#8b90a0",
+                "outline-variant": "#414755"
+              },
+              fontFamily: { "headline": ["Manrope"], "body": ["Inter"], "label": ["Inter"] },
+            },
+          },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f141b; color: #dee2ed; min-height: 100vh; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-card { background: rgba(27, 32, 39, 0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .neural-glow { box-shadow: 0 0 20px rgba(60, 215, 255, 0.15); }
+
+        /* Legacy Content Targeting for dynamic HTML injection */
+        #content-block h2 { font-family: 'Manrope', sans-serif; font-size: 1.5rem; font-weight: 700; color: #3cd7ff; margin-top: 2rem; margin-bottom: 1rem; }
+        #content-block p { font-size: 1rem; line-height: 1.8; color: #dee2ed; margin-bottom: 1.5rem; }
+        #content-block .code-block { background: rgba(0,0,0,0.4); border: 1px solid rgba(60,215,255,0.15); border-left: 3px solid #3cd7ff; border-radius: 8px; padding: 1.25rem 1.5rem; margin: 1.5rem 0; font-family: monospace; color: #a8d8f0; }
+        #content-block .callout { border-radius: 10px; padding: 1.25rem 1.5rem; margin: 1.5rem 0; background: rgba(60,215,255,0.05); border: 1px solid rgba(60,215,255,0.2); color: rgba(60,215,255,0.9); }
+        
+        /* Custom scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+    </style>
+<link rel="stylesheet" href="css/animations.css" />
+</head>
+<body class="selection:bg-primary/30 flex flex-col min-h-screen anim-bg-pan">
+<header class="fixed top-0 w-full z-50 bg-slate-900/70 backdrop-blur-xl border-b border-primary/10 shadow-[0_20px_40px_-15px_rgba(60,215,255,0.08)]">
+<div class="flex justify-between items-center px-8 h-[76px] max-w-7xl mx-auto w-full relative">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#3cd7ff]" style="font-size: 32px;">psychology</span>
+<a href="index.html" class="text-2xl font-black tracking-tighter text-white uppercase font-['Manrope']">NeuroLearn</a>
+</div>
+<nav class="hidden md:flex items-center gap-8 font-['Inter'] text-sm font-medium absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+<a class="text-slate-300 hover:text-white transition-colors" href="index.html">Home</a>
+<a class="text-[#3cd7ff] transition-colors" href="course.html">Courses</a>
+<a class="text-slate-300 hover:text-white transition-colors" href="dashboard.html">Dashboard</a>
+<a class="text-slate-300 hover:text-white transition-colors" href="recommendation.html">AI Recs</a>
+<a class="text-slate-300 hover:text-white transition-colors" href="profile.html">Profile</a>
+<a class="text-slate-300 hover:text-white transition-colors" href="youtube-search.html">YT Search</a>
+</nav>
+<div class="flex items-center gap-4 hidden md:flex">
+<a href="quiz.html" class="px-5 py-2 rounded-full text-xs font-bold tracking-widest uppercase bg-primary text-[#0f141b] hover:bg-white transition-all shadow-[0_0_15px_rgba(60,215,255,0.3)]">Take Assessment →</a>
+</div>
+</div>
+</header>
+<div class="h-[76px] w-full"></div>
+
+<div class="flex flex-1 overflow-hidden relative">
+  <!-- TOC Sidebar -->
+  <aside class="hidden lg:flex w-72 flex-col bg-surface-container-low border-r border-white/5 h-[calc(100vh-73px)] sticky top-[73px] overflow-y-auto custom-scrollbar anim-slide-right">
+    <div class="p-6">
+      <h3 class="font-headline text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-4">Table of Contents</h3>
+      <nav id="toc-list" class="space-y-1">
+        <button onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})" class="w-full text-left px-4 py-3 rounded-xl flex items-center gap-3 bg-primary/10 border border-primary/20 text-primary transition-all group">
+          <div class="w-3 h-3 rounded-full border-[1.5px] border-primary group-hover:bg-primary/30 transition-colors"></div>
+          <span class="text-sm font-medium">Introduction</span>
+        </button>
+        <button onclick="document.getElementById('concept').scrollIntoView({behavior:'smooth'})" class="w-full text-left px-4 py-3 rounded-xl flex items-center gap-3 text-slate-400 hover:text-white hover:bg-white/5 transition-all group mt-1 mt-1">
+          <div class="w-3 h-3 rounded-full border-[1.5px] border-slate-600 group-hover:border-slate-400 transition-colors"></div>
+          <span class="text-sm font-medium">Core Concept</span>
+        </button>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 overflow-y-auto w-full p-6 md:p-12 pb-32 custom-scrollbar">
+    <div class="max-w-3xl mx-auto">
+      <!-- Breadcrumbs -->
+      <nav class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-500 mb-8 anim-slide-right">
+        <a href="course.html" class="hover:text-primary transition-colors">Courses</a>
+        <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+        <a href="course.html" id="breadcrumb-course" class="hover:text-primary transition-colors">Course Name</a>
+        <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+        <span id="lesson-name" class="text-slate-300">Module Topic</span>
+      </nav>
+
+      <header class="mb-10 anim-slide-right delay-200">
+        <h1 id="lesson-topic" class="font-headline text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-4">Module Topic</h1>
+        <div class="flex items-center gap-4">
+          <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-tertiary/10 text-tertiary border border-tertiary/20">Core Logic</span>
+          <span class="text-xs font-semibold text-slate-400 uppercase tracking-widest flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> 12 min read</span>
+        </div>
+      </header>
+
+      <!-- Content Container -->
+      <div id="content-block" class="glass-card p-8 md:p-12 rounded-3xl border border-white/5 relative overflow-hidden anim-fade-up delay-400">
+        <div class="absolute -right-20 -top-20 w-64 h-64 bg-primary/5 rounded-full blur-[80px] pointer-events-none"></div>
+        <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-secondary/5 rounded-full blur-[80px] pointer-events-none"></div>
+        
+        <div class="text-center py-20 text-primary animate-pulse">
+          <span class="material-symbols-outlined text-4xl mb-3 block">data_object</span>
+          <span class="text-sm font-bold uppercase tracking-widest">Loading Neural Matrix...</span>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Background Decor -->
+<div class="fixed top-1/4 -left-20 w-96 h-96 bg-primary/5 rounded-full blur-[120px] -z-10 pointer-events-none anim-float"></div>
+<div class="fixed bottom-1/4 -right-20 w-[30rem] h-[30rem] bg-secondary/5 rounded-full blur-[150px] -z-10 pointer-events-none anim-float delay-500"></div>
+
+<script src="js/api.js?v=2"></script>
+<script src="js/auth.js?v=2"></script>
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const courseId = urlParams.get('courseId');
+  const topicId = urlParams.get('topicId');
+  const course = urlParams.get('course') || 'Course Overview';
+  const topic = urlParams.get('topic') || 'Learning Module';
+
+  document.getElementById('breadcrumb-course').textContent = course;
+  document.getElementById('lesson-topic').textContent = topic;
+  document.getElementById('lesson-name').textContent = topic;
+
+  async function loadContent() {
+    if (!courseId) {
+      document.getElementById('content-block').innerHTML = '<div class="text-center py-10"><h2 class="text-error mb-2">Matrix Access Denied</h2><p class="text-slate-400 mb-6">No specific course node was provided.</p><a href="course.html" class="px-6 py-3 rounded-xl bg-surface-bright text-white font-bold tracking-wide hover:bg-primary hover:text-on-primary transition-all">Return to Courses</a></div>';
+      return;
+    }
+
+    try {
+      const res = await API.courses.getTopics(courseId);
+      if (res.success && res.data) {
+        const t = res.data.find(x => (topicId && x._id === topicId) || x.title === topic);
+        if (t) {
+          document.getElementById('content-block').innerHTML = `
+            <section id="intro" class="relative z-10">
+              <h2>Module Overview</h2>
+              <p class="text-lg text-slate-300 leading-relaxed font-light">${t.description}</p>
+            </section>
+            
+            <div class="w-full h-px bg-white/10 my-10 relative z-10"></div>
+            
+            <section id="concept" class="relative z-10">
+              <h2>Logic Architecture</h2>
+              <div class="prose prose-invert max-w-none prose-p:text-slate-300 prose-p:leading-relaxed prose-headings:font-headline prose-headings:text-primary">
+                ${t.content}
+              </div>
+            </section>
+            
+            <div class="mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
+              <a href="course.html" class="px-6 py-3 rounded-xl border border-white/10 text-white font-bold tracking-wide hover:bg-white/5 transition-all text-sm w-full md:w-auto text-center">← Return to Catalog</a>
+              <a href="quiz.html?topic=${encodeURIComponent(topic)}" class="px-6 py-3 rounded-xl bg-gradient-to-r from-primary to-secondary text-[#0f141b] font-bold tracking-wide shadow-[0_0_15px_rgba(60,215,255,0.3)] hover:opacity-90 transition-all text-sm w-full md:w-auto text-center">Initialize Assessment →</a>
+            </div>
+          `;
+        } else {
+          document.getElementById('content-block').innerHTML = '<div class="text-error font-bold p-10 text-center">Topic data missing from the neural DB.</div>';
+        }
+      }
+    } catch (err) {
+      document.getElementById('content-block').innerHTML = '<div class="text-error font-bold p-10 text-center">Failed to establish connection to neural DB.</div>';
+    }
+  }
+
+  loadContent();
+</script>
+</body></html>

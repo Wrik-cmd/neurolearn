@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NeuroLearn | Course Catalog</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "surface-dim": "#0f141b",
+                "surface": "#0f141b",
+                "surface-bright": "#353942",
+                "surface-container-lowest": "#090e15",
+                "surface-container-low": "#171c23",
+                "surface-container": "#1b2027",
+                "surface-container-high": "#252a32",
+                "surface-container-highest": "#30353d",
+                "surface-variant": "#30353d",
+                "on-surface": "#dee2ed",
+                "on-surface-variant": "#c1c6d7",
+                "background": "#0f141b",
+                "on-background": "#dee2ed",
+                "primary": "#3cd7ff",
+                "on-primary": "#003642",
+                "primary-container": "#009ebe",
+                "secondary": "#d1bcff",
+                "on-secondary": "#3c0090",
+                "secondary-container": "#7000ff",
+                "tertiary": "#00e290",
+                "tertiary-container": "#00a668",
+                "error": "#ffb4ab",
+                "outline": "#8b90a0",
+                "outline-variant": "#414755"
+              },
+              fontFamily: { "headline": ["Manrope"], "body": ["Inter"], "label": ["Inter"] },
+            },
+          },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f141b; color: #dee2ed; min-height: 100vh; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-card { background: rgba(27, 32, 39, 0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .neural-glow { box-shadow: 0 0 20px rgba(60, 215, 255, 0.15); }
+    </style>
+<link rel="stylesheet" href="css/animations.css" />
+</head>
+<body class="selection:bg-primary/30 anim-bg-pan">
+<header class="fixed top-0 w-full z-50 bg-slate-900/70 backdrop-blur-xl border-b border-primary/10 shadow-[0_20px_40px_-15px_rgba(60,215,255,0.08)]">
+<div class="flex justify-between items-center px-8 h-[76px] max-w-7xl mx-auto w-full">
+<div class="flex items-center gap-3 w-48 md:w-64">
+<span class="material-symbols-outlined text-[#3cd7ff]" style="font-size: 32px;">psychology</span>
+<a href="index.html" class="text-2xl font-black tracking-tighter text-white uppercase font-['Manrope']">NeuroLearn</a>
+</div>
+<nav class="hidden md:flex items-center justify-center gap-8 font-['Inter'] text-sm font-medium flex-1">
+<a class="text-slate-300 hover:text-white transition-colors" href="index.html">Home</a>
+<a class="text-[#3cd7ff] transition-colors" href="course.html">Courses</a>
+<a class="text-slate-300 hover:text-white transition-colors" href="dashboard.html">Dashboard</a>
+<a class="text-slate-300 hover:text-white transition-colors" href="recommendation.html">AI Recs</a>
+<a class="text-slate-300 hover:text-white transition-colors" href="profile.html">Profile</a>
+<a class="text-slate-300 hover:text-white transition-colors" href="youtube-search.html">YT Search</a>
+</nav>
+<div class="flex items-center justify-end gap-4 w-48 md:w-64">
+<a href="#" data-action="logout" class="px-5 py-2 rounded-full border border-white/10 text-xs font-bold tracking-widest uppercase hover:bg-white/5 transition-all text-error hover:text-red-400">Logout</a>
+</div>
+</div>
+</header>
+<div class="h-[76px] w-full flex-shrink-0"></div>
+<main class="relative min-h-screen pb-32">
+<!-- Hero -->
+<section class="px-6 pt-20 pb-16 text-center max-w-4xl mx-auto anim-fade-up delay-100">
+<h1 class="font-headline text-5xl md:text-7xl font-extrabold tracking-tight mb-6 bg-gradient-to-b from-on-surface to-on-surface-variant bg-clip-text text-transparent anim-gradient-text">
+                Browse Courses
+            </h1>
+<p class="text-on-surface-variant text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed">
+                Master in-demand topics with <span class="text-primary font-medium">AI-adaptive quizzes</span> and high-fidelity neural learning modules.
+            </p>
+</section>
+<!-- Filters -->
+<section class="px-6 mb-12 flex flex-wrap justify-center gap-3 anim-fade-up delay-200" id="filter-bar">
+<button class="filter-btn px-6 py-2.5 rounded-full text-sm font-semibold tracking-wide bg-primary text-on-primary neural-glow shadow-[0_0_15px_rgba(60,215,255,0.4)] active anim-btn-pulse" data-filter="all">All Topics</button>
+<button class="filter-btn px-6 py-2.5 rounded-full text-sm font-medium tracking-wide bg-surface-container-high text-on-surface-variant hover:bg-surface-variant transition-all" data-filter="core subjects">Core Subjects</button>
+<button class="filter-btn px-6 py-2.5 rounded-full text-sm font-medium tracking-wide bg-surface-container-high text-on-surface-variant hover:bg-surface-variant transition-all" data-filter="Easy">Easy</button>
+<button class="filter-btn px-6 py-2.5 rounded-full text-sm font-medium tracking-wide bg-surface-container-high text-on-surface-variant hover:bg-surface-variant transition-all" data-filter="Medium">Medium</button>
+<button class="filter-btn px-6 py-2.5 rounded-full text-sm font-medium tracking-wide bg-surface-container-high text-on-surface-variant hover:bg-surface-variant transition-all" data-filter="Hard">Hard</button>
+<button class="filter-btn px-6 py-2.5 rounded-full text-sm font-medium tracking-wide bg-surface-container-high text-on-surface-variant hover:bg-surface-variant transition-all" data-filter="web">Web Dev</button>
+<button class="filter-btn px-6 py-2.5 rounded-full text-sm font-medium tracking-wide bg-surface-container-high text-on-surface-variant hover:bg-surface-variant transition-all" data-filter="ai">AI</button>
+</section>
+<!-- Grid -->
+<section id="courses-grid" class="px-6 max-w-5xl mx-auto space-y-6">
+  <div class="text-center text-slate-500 py-10">Loading courses...</div>
+</section>
+</main>
+<!-- Backdrop & Sidebar -->
+<div id="backdrop" class="fixed inset-0 bg-black/50 z-50 hidden transition-opacity opacity-0 backdrop-blur-sm"></div>
+<aside id="topics-panel" class="fixed right-0 top-0 h-full w-full md:w-[28rem] bg-[#171c23]/95 backdrop-blur-xl border-l border-white/5 shadow-[-10px_0_30px_rgba(0,0,0,0.5)] z-[60] flex flex-col p-6 space-y-6 translate-x-full transition-transform duration-500 ease-in-out">
+<div class="flex items-center justify-between border-b border-outline-variant/10 pb-6">
+  <div class="flex items-center gap-3">
+    <span class="material-symbols-outlined text-primary">menu_open</span>
+    <span class="font-headline font-bold text-[#3cd7ff] tracking-widest text-sm uppercase">Course Modules</span>
+  </div>
+  <button id="topics-close" class="text-slate-400 hover:text-white"><span class="material-symbols-outlined">close</span></button>
+</div>
+<div id="topics-content" class="flex flex-col space-y-4 overflow-y-auto pr-2 custom-scrollbar flex-1 pb-10"></div>
+</aside>
+<!-- Background Decor -->
+<div class="fixed top-1/4 -left-20 w-96 h-96 bg-primary/5 rounded-full blur-[120px] -z-10 pointer-events-none anim-float"></div>
+<div class="fixed bottom-1/4 -right-20 w-[30rem] h-[30rem] bg-secondary/5 rounded-full blur-[150px] -z-10 pointer-events-none anim-float delay-500"></div>
+
+<script src="js/api.js?v=2"></script>
+<script src="js/auth.js?v=2"></script>
+<script>
+  let coursesData = [];
+  const topicsMap = {
+    'Data Structure': ['Introduction to Big O','Arrays & Strings','Linked Lists','Stacks & Queues','Hash Tables','Binary Trees','Graph Traversal','Sorting Algorithms','Dynamic Programming','Recursion Deep Dive'],
+    'JavaScript Mastery': ['Variables & Data Types','Functions & Closures','Prototypes & Classes','Async/Await & Promises','ES6+ Features','Modules & Bundlers','DOM Manipulation','Event Loop','Error Handling','Testing with Jest'],
+    'System Design Basics': ['Scalability Basics','Load Balancing','Caching Strategies','Database Sharding','CAP Theorem','Microservices','API Design','Message Queues','Monitoring & Alerts','Case Studies'],
+    'Web Fundamentals': ['HTML Semantics','CSS Flexbox & Grid','Responsive Design','Accessibility (a11y)','Browser Storage','Authentication Basics','RESTful APIs','Web Performance','SEO Fundamentals','Web Security Practices'],
+    'DBMS': ['Relational vs NoSQL','ACID Properties','Normalization Forms','Indexes & Performance','Joins & Subqueries','Transactions','Connection Pooling','Replication Basics','Data Modeling','Graph Databases'],
+    'Python for Data Science': ['Python Syntax Basics', 'NumPy Arrays', 'Pandas DataFrames', 'Data Cleaning', 'Matplotlib & Seaborn', 'Scikit-Learn Basics', 'Linear Regression', 'Logistic Regression', 'Decision Trees', 'Model Evaluation'],
+    'React.js Essentials': ['JSX & Components', 'Props & State', 'Component Lifecycle', 'React Hooks (useState)', 'React Hooks (useEffect)', 'Handling Events', 'Context API', 'React Router', 'Form Handling', 'Performance Optimization'],
+    'DevOps & Deployment': ['Linux Command Line', 'Bash Scripting', 'Git & GitHub', 'Docker Containers', 'Docker Compose', 'CI/CD Pipelines', 'AWS Basics', 'Nginx Deep Dive', 'Kubernetes Architecture', 'IaC with Terraform'],
+    'CN': ['OSI Model', 'TCP/IP', 'Routing Protocols', 'IP Addressing', 'DNS & DHCP', 'Transport Layer', 'Network Security', 'Wireless Networks', 'Application Layer', 'Network Topologies'],
+    'OS': ['Processes & Threads', 'CPU Scheduling', 'Memory Management', 'Virtual Memory', 'Concurrency & Deadlocks', 'File Systems', 'I/O Systems', 'Security', 'Distributed Systems', 'OS Structures'],
+    'COA': ['ISA', 'ALUs & Datapaths', 'Memory Hierarchy', 'Pipelining', 'Instruction Level Parallelism', 'I/O & Interrupts', 'Microprogramming', 'Logic Gates', 'Multicore Processors', 'Assembly Language'],
+    'Node.js Mastery': ['Node.js Architecture', 'Non-Blocking I/O', 'Callbacks & Promises', 'Event Loop Deep Dive', 'Modules & CommonJS', 'npm & Package Management', 'Streams', 'HTTP Server Basics', 'File System', 'Error Handling'],
+    'Express.js Framework': ['Express Basics', 'Middleware Functions', 'Routing', 'Error Handling Middleware', 'Template Engines', 'Express Security', 'Body Parsing', 'Static Files', 'Database Integration', 'Best Practices'],
+    'MongoDB Deep Dive': ['Document Model', 'BSON Types', 'CRUD Operations', 'Complex Queries ($or, $and)', 'Indexing Strategies', 'Aggregation Framework', 'Replica Sets', 'Sharding', 'GridFS', 'Mongoose Basics'],
+    'AI & Machine Learning': ['Intro to AI vs ML', 'Supervised vs Unsupervised', 'Neural Networks', 'Deep Learning Concepts', 'NLP', 'Computer Vision', 'Model Bias & Fairness', 'Training/Test Splits', 'Hyperparameters', 'Deploying Models']
+  };
+
+  async function initCourses() {
+    try {
+      const res = await API.courses.getAll();
+      if (res.success && res.data) coursesData = res.data;
+    } catch (err) {
+      console.log('Failed to fetch from API, using fallback data if any.');
+    }
+    
+    if (!coursesData.length) {
+      document.getElementById('courses-grid').innerHTML = '<div class="text-center text-slate-500 py-10">No courses found. Ensure backend is running.</div>';
+      return;
+    }
+    renderCourses();
+  }
+
+  function getDiffColor(diff) {
+    if(diff==='Hard') return 'text-secondary border-secondary/20 bg-secondary/10';
+    if(diff==='Medium') return 'text-primary border-primary/20 bg-primary/10';
+    return 'text-tertiary border-tertiary/20 bg-tertiary/10';
+  }
+  function getDiffClass(diff) {
+    if(diff==='Hard') return 'secondary';
+    if(diff==='Medium') return 'primary';
+    return 'tertiary';
+  }
+
+  function renderCourses(filter = 'all') {
+    const grid = document.getElementById('courses-grid');
+    const filtered = filter === 'all'
+      ? coursesData
+      : coursesData.filter(c => {
+          const cat = (c.category || '').toLowerCase();
+          const diff = (c.difficulty || '').toLowerCase();
+          const target = filter.toLowerCase();
+          return cat.includes(target) || diff === target;
+        });
+
+    grid.innerHTML = filtered.map((c, i) => {
+      const gColor = getDiffColor(c.difficulty);
+      const glowStr = getDiffClass(c.difficulty);
+      return `
+      <div class="glass-card p-8 rounded-3xl group border border-outline-variant/10 hover:border-${glowStr}/30 transition-all duration-500 flex flex-col md:flex-row items-center gap-8 relative overflow-hidden anim-fade-up" style="animation-duration:0.8s;animation-delay:${0.1+i*0.1}s;opacity:1;">
+        <div class="absolute -right-20 -top-20 w-64 h-64 bg-${glowStr}/5 rounded-full blur-[80px] pointer-events-none group-hover:bg-${glowStr}/10 transition-all"></div>
+        <div class="w-24 h-24 flex-shrink-0 flex items-center justify-center rounded-2xl bg-surface-container-highest text-${glowStr} shadow-inner">
+          <span class="material-symbols-outlined text-5xl">${c.icon}</span>
+        </div>
+        <div class="flex-grow space-y-3 text-center md:text-left">
+          <div class="flex items-center justify-center md:justify-start gap-3 flex-wrap">
+            <h3 class="font-headline text-2xl font-bold tracking-tight text-white">${c.title}</h3>
+            <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border ${gColor}">${c.difficulty}</span>
+          </div>
+          <p class="text-on-surface-variant leading-relaxed max-w-lg mx-auto md:mx-0">${c.desc}</p>
+          <div class="text-xs text-slate-500 font-bold uppercase tracking-widest">📖 ${c.topics} Topics • 👥 ${(c.enrolled/1000).toFixed(1)}K Enrolled</div>
+        </div>
+        <div class="w-full md:w-auto">
+          <button onclick="openTopics('${c.id}', '${c.title.replace(/'/g, "\\'")}')" class="w-full md:w-auto px-8 py-3 rounded-xl bg-surface-bright text-on-surface font-bold tracking-wide hover:bg-${glowStr} hover:text-black transition-all duration-300 active:scale-95 text-center">
+            ${c.progress > 0 ? 'Continue' : 'Explore'}
+          </button>
+        </div>
+      </div>
+    `}).join('');
+  }
+
+  async function openTopics(id, title) {
+    const panel = document.getElementById('topics-panel');
+    const content = document.getElementById('topics-content');
+    const backdrop = document.getElementById('backdrop');
+
+    panel.classList.remove('translate-x-full');
+    backdrop.classList.remove('hidden');
+    setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
+    
+    content.innerHTML = '<div class="text-center text-slate-500 py-10">Loading modules...</div>';
+
+    try {
+      const res = await API.courses.getTopics(id);
+      const topics = res.success ? res.data : [];
+
+      content.innerHTML = `
+        <h2 class="font-headline text-xl font-bold text-white mb-1 shadow-sm">${title}</h2>
+        <p class="text-xs text-slate-400 mb-6 font-bold uppercase tracking-widest">${topics.length} Modules Available</p>
+        <div class="space-y-3">
+          ${topics.map((t, i) => `
+            <div class="p-4 rounded-xl bg-[#1b2027] border-l-4 border-primary/50 hover:border-primary transition-colors flex flex-col gap-3 group">
+              <div class="flex justify-between items-start">
+                <span class="text-[10px] font-bold text-primary tracking-tighter uppercase">Module ${String(i+1).padStart(2,'0')}</span>
+                <span class="material-symbols-outlined text-primary text-xs">auto_stories</span>
+              </div>
+              <h4 class="text-sm font-semibold text-slate-200 tracking-wide">${t.title}</h4>
+              <p class="text-xs text-slate-500">${t.description ? t.description.substring(0,60)+'...' : ''}</p>
+              <div class="flex gap-2 mt-1">
+                <a href="learn.html?courseId=${id}&course=${encodeURIComponent(title)}&topicId=${t._id}&topic=${encodeURIComponent(t.title)}" class="flex-1 py-1.5 rounded-lg bg-surface-bright text-slate-300 text-[10px] font-bold uppercase tracking-widest hover:bg-slate-700 transition-all text-center">Study</a>
+                <a href="quiz.html?topic=${encodeURIComponent(t.title)}" class="flex-1 py-1.5 rounded-lg bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest hover:bg-primary hover:text-[#0f141b] transition-all text-center">Take Quiz</a>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+        <a href="quiz.html?course=${id}" class="w-full mt-6 py-3 rounded-xl bg-gradient-to-r from-primary to-secondary text-[#0f141b] text-xs font-bold uppercase tracking-widest hover:opacity-90 transition-all text-center block">
+          Take Final Assessment
+        </a>
+      `;
+    } catch(e) {
+      content.innerHTML = '<div class="text-error font-bold p-4">Failed to load modules.</div>';
+    }
+  }
+
+  function closeTopics() {
+    document.getElementById('topics-panel').classList.add('translate-x-full');
+    document.getElementById('backdrop').classList.add('opacity-0');
+    setTimeout(() => document.getElementById('backdrop').classList.add('hidden'), 300);
+  }
+
+  document.getElementById('topics-close').addEventListener('click', closeTopics);
+  document.getElementById('backdrop').addEventListener('click', closeTopics);
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        b.className = "filter-btn px-6 py-2.5 rounded-full text-sm font-medium tracking-wide bg-surface-container-high text-on-surface-variant hover:bg-surface-variant transition-all";
+      });
+      this.className = "filter-btn px-6 py-2.5 rounded-full text-sm font-semibold tracking-wide bg-primary text-on-primary neural-glow shadow-[0_0_15px_rgba(60,215,255,0.4)] active";
+      renderCourses(this.dataset.filter);
+    });
+  });
+
+  initCourses();
+</script>
+</body></html>
